@@ -17,7 +17,24 @@ mvn clean compile
 mvn clean package
 ```
 
+### protobuf
+
+Prometheus使用protobuf序列化监控指标，对应的数据格式描述文件在resources/prometheus/protobuf目录下。
+
+#### 生成Java文件
+
+```go
+# -I为源目录，--java_out指定输出为Java文件，*.proto为对应的proto文件名称
+protoc -I=./ --java_out=./ *.proto
+```
+
+### Prometheus remote write
+
+Prometheus是通过Pull的方式拉取监控指标的，数据存储在本地磁盘，使用的TSDB时序数据库。官方为有持久存储监控指标需求的提供了remote write功能，简单理解就是，配置了remote write后，Prometheus拉取的数据不仅会保存在本地磁盘，还会通过Snappy压缩监控指标，并通过protobuf序列化，把数据发送到prometheus.yml中配置的remote write url。具体可参考官网：https://prometheus.io/docs/prometheus/latest/storage/
+
 ### 计划
+
+- 结合Maven完成自动化构建protobuf代码依赖
 
 - 完成Prometheus上送kafka
 
