@@ -30,7 +30,12 @@ protoc -I=./ --java_out=./ *.proto
 
 ### Prometheus remote write
 
-Prometheus是通过Pull的方式拉取监控指标的，数据存储在本地磁盘，使用的TSDB时序数据库。官方为有持久存储监控指标需求的提供了remote write功能，简单理解就是，配置了remote write后，Prometheus拉取的数据不仅会保存在本地磁盘，还会通过Snappy压缩监控指标，并通过protobuf序列化，把数据发送到prometheus.yml中配置的remote write url。具体可参考官网：https://prometheus.io/docs/prometheus/latest/storage/
+Prometheus是通过Pull的方式拉取监控指标的，数据存储在本地磁盘，使用的TSDB时序数据库。官方为有持久存储监控指标需求的提供了remote write功能，简单理解就是，配置了remote write后，Prometheus拉取的数据不仅会保存在本地磁盘，还会通过protobuf序列化，并通过Snappy压缩监控指标，把数据发送到prometheus.yml中配置的remote write url。具体可参考官网：https://prometheus.io/docs/prometheus/latest/storage/
+
+```yaml
+remote_write:
+- url: "http://localhost:9527/receive"
+```
 
 ### 计划
 
